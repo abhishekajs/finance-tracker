@@ -1,18 +1,23 @@
 @use '@angular/material' as mat;
+@import 'styles/variables';
+@import 'styles/functions';
+@import 'styles/mixins';
 
 $primary-palette: mat.define-palette(mat.$indigo-palette);
 $accent-palette: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $warn-palette: mat.define-palette(mat.$red-palette);
 
-$theme: mat.define-light-theme((
-  color: (    
-    primary: $primary-palette,
-    accent: $accent-palette,
-    warn: $warn-palette,
-  ),  
-  typography: mat.define-typography-config(),
-  density: 0,
-));
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary-palette,
+      accent: $accent-palette,
+      warn: $warn-palette,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
 
 @include mat.all-component-themes($theme);
 // Custom variables
@@ -32,10 +37,16 @@ $theme: mat.define-light-theme((
   box-sizing: border-box;
 }
 
+// Global responsive typography
+html {
+  font-size: 16px; // Base font size for rem calculations
+}
+
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  background-color: var(--background-color);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-secondary);
+  line-height: 1.5;
 }
 
 .container {
@@ -49,4 +60,3 @@ $mobile: 576px;
 $tablet: 768px;
 $desktop: 992px;
 $large: 1200px;
- 

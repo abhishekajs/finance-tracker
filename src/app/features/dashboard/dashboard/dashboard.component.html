@@ -1,0 +1,65 @@
+<mat-toolbar color="primary" class="dashboard-toolbar">
+  <span>Finance Tracker</span>
+  <span class="spacer"></span>
+  <span *ngIf="currentUser" class="user-name"
+    >Welcome, {{ currentUser.name }}!</span
+  >
+  <button mat-icon-button (click)="onLogout()" class="logout-button">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <div class="dashboard-content">
+    <mat-card class="welcome-card">
+      <mat-card-header>
+        <mat-card-title>Dashboard</mat-card-title>
+        <mat-card-subtitle>Manage your finances effectively</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p *ngIf="currentUser">
+          Hello {{ currentUser.name }}, welcome to your finance dashboard!
+        </p>
+        <p>
+          This is a placeholder dashboard. More features will be added in
+          upcoming weeks.
+        </p>
+
+        <div class="feature-grid">
+          <mat-card class="feature-card">
+            <mat-card-content>
+              <mat-icon class="feature-icon">account_balance</mat-icon>
+              <h3>Accounts</h3>
+              <p>Manage your bank accounts</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="feature-card">
+            <mat-card-content>
+              <mat-icon class="feature-icon">receipt</mat-icon>
+              <h3>Transactions</h3>
+              <p>Track your income and expenses</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="feature-card">
+            <mat-card-content>
+              <mat-icon class="feature-icon">pie_chart</mat-icon>
+              <h3>Analytics</h3>
+              <p>View spending insights</p>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="feature-card">
+            <mat-card-content>
+              <mat-icon class="feature-icon">savings</mat-icon>
+              <h3>Budgets</h3>
+              <p>Set and track budgets</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

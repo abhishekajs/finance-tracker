@@ -1,0 +1,156 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: spacing(4);
+  background: var(--gradient-secondary);
+}
+
+.register-card {
+  width: 100%;
+  max-width: rem(320);
+  padding: spacing(4);
+
+  @include card-shadow(1);
+  border-radius: rem(12);
+  background: var(--bg-primary);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: spacing(3);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: spacing(4);
+}
+
+.register-button {
+  @include button-base;
+  width: 100%;
+  height: rem(44);
+  font-size: rem(14);
+}
+
+.login-link {
+  color: var(--primary-500);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: rem(14);
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--primary-600);
+  }
+}
+
+mat-card-header {
+  text-align: center;
+  margin-bottom: spacing(4);
+}
+
+mat-card-title {
+  font-size: rem(20);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+mat-card-subtitle {
+  font-size: rem(13);
+  color: var(--text-secondary);
+  margin-top: spacing(1);
+}
+
+@include tablet-up {
+  .register-container {
+    padding: spacing(5);
+  }
+
+  .register-card {
+    max-width: rem(400);
+    padding: spacing(5);
+    @include card-shadow(2);
+    border-radius: rem(14);
+  }
+
+  .full-width {
+    margin-bottom: spacing(4);
+  }
+
+  .button-container {
+    margin-top: spacing(5);
+  }
+
+  .register-button {
+    height: rem(46);
+    font-size: rem(15);
+  }
+
+  mat-card-header {
+    margin-bottom: spacing(5);
+  }
+
+  mat-card-title {
+    font-size: rem(22);
+  }
+
+  mat-card-subtitle {
+    font-size: rem(14);
+    margin-top: spacing(1.5);
+  }
+
+  .login-link {
+    font-size: rem(15);
+  }
+}
+
+@include desktop-up {
+  .register-container {
+    padding: spacing(6);
+  }
+
+  .register-card {
+    max-width: rem(420);
+    padding: spacing(6);
+    @include card-shadow(3);
+    border-radius: rem(16);
+  }
+
+  .register-button {
+    height: rem(48);
+    font-size: rem(16);
+  }
+
+  mat-card-title {
+    font-size: rem(24);
+  }
+
+  .login-link {
+    font-size: rem(16);
+  }
+}
+
+@include large-up {
+  .register-card {
+    max-width: rem(440);
+    padding: spacing(7);
+  }
+}
+
+// Touch device optimizations
+@include touch-device {
+  .register-button {
+    min-height: rem(48);
+  }
+
+  .login-link {
+    padding: spacing(2);
+    margin: spacing(-2);
+  }
+}
