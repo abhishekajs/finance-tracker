@@ -1,0 +1,52 @@
+// Responsive breakpoint mixins
+@mixin mobile-up {
+  @media (min-width: #{breakpoint('mobile')}) {
+    @content;
+  }
+}
+
+@mixin tablet-up {
+  @media (min-width: #{breakpoint('tablet')}) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: #{breakpoint('desktop')}) {
+    @content;
+  }
+}
+
+@mixin large-up {
+  @media (min-width: #{breakpoint('large')}) {
+    @content;
+  }
+}
+
+// Touch device mixin
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+// Card shadow mixin
+@mixin card-shadow($level: 1) {
+  @if $level == 1 {
+    box-shadow: 0 rem(4) rem(16) rgba(0, 0, 0, 0.1);
+  } @else if $level == 2 {
+    box-shadow: 0 rem(6) rem(24) rgba(0, 0, 0, 0.1);
+  } @else if $level == 3 {
+    box-shadow: 0 rem(8) rem(32) rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Button styles mixin
+@mixin button-base {
+  border: none;
+  border-radius: rem(8);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: rem(44); // Touch-friendly
+}

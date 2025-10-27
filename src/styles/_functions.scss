@@ -1,0 +1,22 @@
+@use 'sass:math';
+
+// Convert px to rem (base font-size: 16px)
+@function rem($pixels) {
+  @return #{math.div($pixels, 16)}rem;
+}
+
+// Spacing scale function
+@function spacing($multiplier) {
+  @return rem($multiplier * 4); // 4px base unit
+}
+
+// Responsive breakpoint function
+@function breakpoint($size) {
+  $breakpoints: (
+    'mobile': 320px,
+    'tablet': 768px,
+    'desktop': 992px,
+    'large': 1200px,
+  );
+  @return map-get($breakpoints, $size);
+}
