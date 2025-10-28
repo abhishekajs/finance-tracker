@@ -1,65 +1,98 @@
-<mat-toolbar color="primary" class="dashboard-toolbar">
-  <span>Finance Tracker</span>
-  <span class="spacer"></span>
-  <span *ngIf="currentUser" class="user-name"
-    >Welcome, {{ currentUser.name }}!</span
-  >
-  <button mat-icon-button (click)="onLogout()" class="logout-button">
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
-
 <div class="dashboard-container">
-  <div class="dashboard-content">
-    <mat-card class="welcome-card">
-      <mat-card-header>
-        <mat-card-title>Dashboard</mat-card-title>
-        <mat-card-subtitle>Manage your finances effectively</mat-card-subtitle>
-      </mat-card-header>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Dashboard</h1>
+    <p class="page-subtitle">
+      Welcome back, {{ currentUser?.name }}! Here's your financial overview.
+    </p>
+  </div>
 
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <mat-card class="stat-card">
       <mat-card-content>
-        <p *ngIf="currentUser">
-          Hello {{ currentUser.name }}, welcome to your finance dashboard!
-        </p>
-        <p>
-          This is a placeholder dashboard. More features will be added in
-          upcoming weeks.
-        </p>
-
-        <div class="feature-grid">
-          <mat-card class="feature-card">
-            <mat-card-content>
-              <mat-icon class="feature-icon">account_balance</mat-icon>
-              <h3>Accounts</h3>
-              <p>Manage your bank accounts</p>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="feature-card">
-            <mat-card-content>
-              <mat-icon class="feature-icon">receipt</mat-icon>
-              <h3>Transactions</h3>
-              <p>Track your income and expenses</p>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="feature-card">
-            <mat-card-content>
-              <mat-icon class="feature-icon">pie_chart</mat-icon>
-              <h3>Analytics</h3>
-              <p>View spending insights</p>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="feature-card">
-            <mat-card-content>
-              <mat-icon class="feature-icon">savings</mat-icon>
-              <h3>Budgets</h3>
-              <p>Set and track budgets</p>
-            </mat-card-content>
-          </mat-card>
+        <div class="stat-content">
+          <div class="stat-icon">
+            <mat-icon>account_balance_wallet</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">₹45,230</h3>
+            <p class="stat-label">Total Balance</p>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon income">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">₹12,500</h3>
+            <p class="stat-label">This Month Income</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon expense">
+            <mat-icon>trending_down</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">₹8,750</h3>
+            <p class="stat-label">This Month Expenses</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-content">
+          <div class="stat-icon savings">
+            <mat-icon>savings</mat-icon>
+          </div>
+          <div class="stat-info">
+            <h3 class="stat-value">₹3,750</h3>
+            <p class="stat-label">Monthly Savings</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="action-grid">
+      <mat-card class="action-card" routerLink="/transactions/add">
+        <mat-card-content>
+          <mat-icon class="action-icon">add</mat-icon>
+          <h3>Add Transaction</h3>
+          <p>Record income or expense</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/accounts">
+        <mat-card-content>
+          <mat-icon class="action-icon">account_balance</mat-icon>
+          <h3>Manage Accounts</h3>
+          <p>View and edit accounts</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/budgets">
+        <mat-card-content>
+          <mat-icon class="action-icon">pie_chart</mat-icon>
+          <h3>View Analytics</h3>
+          <p>Spending insights</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

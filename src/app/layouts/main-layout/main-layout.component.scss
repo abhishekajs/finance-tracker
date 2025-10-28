@@ -1,0 +1,120 @@
+@import '../../../styles/functions';
+@import '../../../styles/mixins';
+
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: rem(250);
+  background: var(--bg-primary);
+  border-right: rem(1) solid var(--neutral-300);
+  @include card-shadow(1);
+
+  .sidenav-header {
+    padding: spacing(4);
+    border-bottom: rem(1) solid var(--neutral-300);
+
+    .app-title {
+      margin: 0;
+      font-size: rem(20);
+      font-weight: 600;
+      color: var(--primary-600);
+    }
+  }
+
+  .nav-list {
+    padding-top: 0;
+
+    .nav-item {
+      margin: spacing(1) spacing(2);
+      border-radius: rem(8);
+      transition: all 0.2s ease;
+      min-height: rem(44);
+
+      &:hover {
+        background-color: var(--neutral-100);
+      }
+
+      &.active-nav-item {
+        background-color: var(--primary-50);
+        color: var(--primary-600);
+
+        mat-icon {
+          color: var(--primary-600);
+        }
+      }
+
+      @include touch-device {
+        min-height: rem(48);
+      }
+    }
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  @include card-shadow(2);
+
+  .menu-button {
+    margin-right: spacing(4);
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .user-menu {
+    .user-button {
+      display: flex;
+      align-items: center;
+      gap: spacing(2);
+
+      .user-name {
+        @include tablet-up {
+          display: inline;
+        }
+
+        display: none;
+      }
+    }
+  }
+}
+
+.page-content {
+  flex: 1;
+  padding: spacing(6);
+  background-color: var(--bg-secondary);
+  overflow-y: auto;
+
+  @include tablet-up {
+    padding: spacing(8);
+  }
+}
+
+@media (max-width: #{breakpoint('tablet')}) {
+  .sidenav {
+    width: rem(280);
+  }
+
+  .page-content {
+    padding: spacing(4);
+  }
+}
+
+@include desktop-up {
+  .sidenav {
+    width: rem(280);
+  }
+
+  .page-content {
+    padding: spacing(10);
+  }
+}
