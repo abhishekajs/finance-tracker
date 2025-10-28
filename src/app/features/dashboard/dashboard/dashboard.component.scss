@@ -1,52 +1,48 @@
 @import '../../../../styles/functions';
 @import '../../../../styles/mixins';
 
-.dashboard-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-
-  .spacer {
-    flex: 1 1 auto;
-  }
-
-  .user-name {
-    margin-right: spacing(2);
-    font-size: rem(14);
-  }
-
-  .logout-button {
-    margin-left: spacing(1);
-  }
-}
-
 .dashboard-container {
-  padding: spacing(4);
-  background: var(--bg-secondary);
-  min-height: calc(100vh - rem(64));
-}
-
-.dashboard-content {
   max-width: rem(1200);
   margin: 0 auto;
 }
 
-.welcome-card {
-  margin-bottom: spacing(6);
-  @include card-shadow(1);
-  border-radius: rem(12);
+.page-header {
+  margin-bottom: spacing(8);
+
+  .page-title {
+    font-size: rem(32);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 spacing(2) 0;
+  }
+
+  .page-subtitle {
+    font-size: rem(16);
+    color: var(--text-secondary);
+    margin: 0;
+  }
 }
 
-.feature-grid {
+.stats-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: spacing(4);
-  margin-top: spacing(6);
+  margin-bottom: spacing(10);
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+    gap: spacing(5);
+  }
+
+  @include desktop-up {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacing(6);
+  }
 }
 
-.feature-card {
+.stat-card {
   @include card-shadow(1);
-  border-radius: rem(8);
+  border-radius: rem(12);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -57,50 +53,130 @@
   }
 
   mat-card-content {
-    text-align: center;
-    padding: spacing(4);
+    padding: spacing(5) !important;
   }
 
-  .feature-icon {
-    font-size: rem(48);
-    width: rem(48);
-    height: rem(48);
-    color: var(--primary-500);
-    margin-bottom: spacing(2);
+  .stat-content {
+    display: flex;
+    align-items: center;
+    gap: spacing(4);
   }
 
-  h3 {
-    margin: spacing(2) 0 spacing(1) 0;
-    color: var(--text-primary);
-    font-size: rem(18);
-    font-weight: 600;
+  .stat-icon {
+    width: rem(56);
+    height: rem(56);
+    border-radius: rem(12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-50);
+
+    mat-icon {
+      font-size: rem(28);
+      width: rem(28);
+      height: rem(28);
+      color: var(--primary-600);
+    }
+
+    &.income {
+      background: #e8f5e8;
+      mat-icon {
+        color: var(--success);
+      }
+    }
+
+    &.expense {
+      background: #ffeaea;
+      mat-icon {
+        color: var(--error);
+      }
+    }
+
+    &.savings {
+      background: #fff3e0;
+      mat-icon {
+        color: var(--warning);
+      }
+    }
   }
 
-  p {
-    color: var(--text-secondary);
-    font-size: rem(14);
-    margin: 0;
+  .stat-info {
+    flex: 1;
+
+    .stat-value {
+      font-size: rem(24);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 spacing(1) 0;
+    }
+
+    .stat-label {
+      font-size: rem(14);
+      color: var(--text-secondary);
+      margin: 0;
+    }
   }
 }
 
-@include tablet-up {
-  .dashboard-container {
-    padding: spacing(6);
+.quick-actions {
+  .section-title {
+    font-size: rem(24);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 spacing(6) 0;
   }
+}
 
-  .feature-grid {
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(4);
+
+  @include tablet-up {
     grid-template-columns: repeat(2, 1fr);
     gap: spacing(5);
   }
+
+  @include desktop-up {
+    grid-template-columns: repeat(3, 1fr);
+    gap: spacing(6);
+  }
 }
 
-@include desktop-up {
-  .dashboard-container {
-    padding: spacing(8);
+.action-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(rem(-4));
+    @include card-shadow(3);
   }
 
-  .feature-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: spacing(6);
+  mat-card-content {
+    text-align: center;
+    padding: spacing(6) !important;
+  }
+
+  .action-icon {
+    font-size: rem(40);
+    width: rem(40);
+    height: rem(40);
+    color: var(--primary-500);
+    margin-bottom: spacing(3);
+  }
+
+  h3 {
+    font-size: rem(18);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 spacing(2) 0;
+  }
+
+  p {
+    font-size: rem(14);
+    color: var(--text-secondary);
+    margin: 0;
   }
 }

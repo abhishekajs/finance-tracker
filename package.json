@@ -48,8 +48,14 @@
     "typescript": "~5.4.2"
   },
   "lint-staged": {
-    "*.ts": ["prettier --write"],
-    "*.html": ["prettier --write"],
-    "*.scss": ["prettier --write"]
+    "*.ts": [
+      "prettier --write"
+    ],
+    "*.html": [
+      "prettier --write"
+    ],
+    "*.scss": [
+      "prettier --write"
+    ]
   }
 }
