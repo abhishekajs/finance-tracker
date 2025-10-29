@@ -22,7 +22,10 @@ export const routes: Routes = [
       },
       {
         path: 'accounts',
-        redirectTo: '/dashboard',
+        loadComponent: () =>
+          import(
+            './features/accounts/account-list/account-list.component'
+          ).then(m => m.AccountListComponent),
       },
       {
         path: 'transactions',

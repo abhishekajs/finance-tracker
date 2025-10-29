@@ -1,0 +1,79 @@
+<div class="accounts-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Accounts</h1>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openAddDialog()"
+      class="add-button"
+    >
+      <mat-icon>add</mat-icon>
+      Add Account
+    </button>
+  </div>
+
+  <!-- Accounts Grid -->
+  <div class="accounts-grid" *ngIf="!loading && accounts.length > 0">
+    <mat-card *ngFor="let account of accounts" class="account-card">
+      <mat-card-header>
+        <div mat-card-avatar class="account-avatar">
+          <mat-icon>{{ getAccountTypeIcon(account.type) }}</mat-icon>
+        </div>
+        <mat-card-title>{{ account.name }}</mat-card-title>
+        <mat-card-subtitle>{{ account.type }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="balance-section">
+          <h2 class="balance-amount">
+            ₹{{ account.balance | number: '1.2-2' }}
+          </h2>
+          <p class="balance-label">Current Balance</p>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions class="card-actions">
+        <button
+          mat-icon-button
+          (click)="openEditDialog(account)"
+          matTooltip="Edit Account"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="deleteAccount(account)"
+          matTooltip="Delete Account"
+          color="warn"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="!loading && accounts.length === 0">
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <mat-icon class="empty-icon">account_balance_wallet</mat-icon>
+        <h2>No Accounts Yet</h2>
+        <p>Start by adding your first account to track your finances.</p>
+        <button mat-raised-button color="primary" (click)="openAddDialog()">
+          <mat-icon>add</mat-icon>
+          Add Your First Account
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <p>Loading accounts...</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
