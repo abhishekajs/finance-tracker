@@ -1,0 +1,71 @@
+<div class="account-form-dialog">
+  <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="accountForm" class="account-form">
+      <!-- Account Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Account Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="e.g., HDFC Savings"
+        />
+        <mat-icon matSuffix>account_balance</mat-icon>
+        <mat-error *ngIf="accountForm.get('name')?.hasError('required')">
+          Account name is required
+        </mat-error>
+        <mat-error *ngIf="accountForm.get('name')?.hasError('minlength')">
+          Account name must be at least 2 characters
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Account Type -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Account Type</mat-label>
+        <mat-select formControlName="type">
+          <mat-option *ngFor="let type of accountTypes" [value]="type">
+            {{ getAccountTypeLabel(type) }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-error *ngIf="accountForm.get('type')?.hasError('required')">
+          Account type is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Balance -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Current Balance</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="balance"
+          placeholder="0.00"
+        />
+        <span matTextPrefix>₹&nbsp;</span>
+        <mat-icon matSuffix>account_balance_wallet</mat-icon>
+        <mat-error *ngIf="accountForm.get('balance')?.hasError('required')">
+          Balance is required
+        </mat-error>
+        <mat-error *ngIf="accountForm.get('balance')?.hasError('min')">
+          Balance cannot be negative
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()" [disabled]="loading">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onSubmit()"
+      [disabled]="!accountForm.valid || loading"
+    >
+      <mat-icon *ngIf="loading">hourglass_empty</mat-icon>
+      <mat-icon *ngIf="!loading">{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+      {{ isEditMode ? 'Update' : 'Create' }} Account
+    </button>
+  </mat-dialog-actions>
+</div>

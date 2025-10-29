@@ -1,0 +1,132 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.accounts-container {
+  max-width: rem(1200);
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: spacing(8);
+
+  .page-title {
+    font-size: rem(32);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .add-button {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+  }
+}
+
+.accounts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacing(6);
+
+  @include tablet-up {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include desktop-up {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.account-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(rem(-2));
+    @include card-shadow(2);
+  }
+
+  .account-avatar {
+    background: var(--primary-50);
+    color: var(--primary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    mat-icon {
+      font-size: rem(24);
+    }
+  }
+
+  .balance-section {
+    text-align: center;
+    padding: spacing(4) 0;
+
+    .balance-amount {
+      font-size: rem(28);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0 0 spacing(1) 0;
+    }
+
+    .balance-label {
+      font-size: rem(14);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+  }
+
+  .card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: spacing(1);
+  }
+}
+
+.empty-state,
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: rem(400);
+}
+
+.empty-card,
+.loading-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+  text-align: center;
+  max-width: rem(400);
+
+  .empty-icon {
+    font-size: rem(64);
+    width: rem(64);
+    height: rem(64);
+    color: var(--neutral-400);
+    margin-bottom: spacing(4);
+  }
+
+  h2 {
+    font-size: rem(24);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 spacing(2) 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: spacing(6);
+  }
+}
+
+@include tablet-up {
+  .page-header {
+    .page-title {
+      font-size: rem(36);
+    }
+  }
+}
