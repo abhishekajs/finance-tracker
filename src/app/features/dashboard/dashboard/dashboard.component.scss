@@ -113,7 +113,14 @@
     .stat-label {
       font-size: rem(14);
       color: var(--text-secondary);
+      margin: 0 0 spacing(1) 0;
+    }
+
+    .stat-detail {
+      font-size: rem(12);
+      color: var(--text-disabled);
       margin: 0;
+      font-style: italic;
     }
   }
 }
@@ -178,5 +185,132 @@
     font-size: rem(14);
     color: var(--text-secondary);
     margin: 0;
+  }
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: rem(200);
+  margin: spacing(8) 0;
+}
+
+.loading-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+  text-align: center;
+  padding: spacing(6);
+
+  p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: rem(16);
+  }
+}
+
+// Recent Transactions Section
+.recent-transactions {
+  margin-top: spacing(10);
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: spacing(6);
+
+    .section-title {
+      font-size: rem(24);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: spacing(1);
+    }
+  }
+}
+
+.transactions-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+
+  .empty-transactions {
+    text-align: center;
+    padding: spacing(8);
+
+    .empty-icon {
+      font-size: rem(64);
+      width: rem(64);
+      height: rem(64);
+      color: var(--neutral-400);
+      margin-bottom: spacing(4);
+    }
+
+    h3 {
+      font-size: rem(20);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0 0 spacing(2) 0;
+    }
+
+    p {
+      color: var(--text-secondary);
+      margin-bottom: spacing(6);
+      font-size: rem(16);
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: spacing(2);
+    }
+  }
+}
+
+@include tablet-up {
+  .recent-transactions {
+    .section-header {
+      .section-title {
+        font-size: rem(28);
+      }
+    }
+  }
+}
+
+// Monthly Spending Chart
+.spending-chart {
+  margin-top: spacing(10);
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: spacing(6);
+
+    .section-title {
+      font-size: rem(24);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+  }
+}
+
+.chart-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+
+  .chart-container {
+    height: rem(400);
+    position: relative;
+    padding: spacing(4);
+
+    @include tablet-up {
+      height: rem(350);
+    }
   }
 }
