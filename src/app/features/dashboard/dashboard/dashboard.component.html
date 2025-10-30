@@ -7,8 +7,17 @@
     </p>
   </div>
 
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-card class="loading-card">
+      <mat-card-content>
+        <p>Loading your financial data...</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <!-- Stats Cards -->
-  <div class="stats-grid">
+  <div class="stats-grid" *ngIf="!loading">
     <mat-card class="stat-card">
       <mat-card-content>
         <div class="stat-content">
@@ -16,8 +25,11 @@
             <mat-icon>account_balance_wallet</mat-icon>
           </div>
           <div class="stat-info">
-            <h3 class="stat-value">₹45,230</h3>
+            <h3 class="stat-value">
+              ₹{{ stats.totalBalance | number: '1.2-2' }}
+            </h3>
             <p class="stat-label">Total Balance</p>
+            <p class="stat-detail">{{ stats.totalAccounts }} accounts</p>
           </div>
         </div>
       </mat-card-content>
@@ -30,8 +42,11 @@
             <mat-icon>trending_up</mat-icon>
           </div>
           <div class="stat-info">
-            <h3 class="stat-value">₹12,500</h3>
+            <h3 class="stat-value">
+              ₹{{ stats.monthlyIncome | number: '1.2-2' }}
+            </h3>
             <p class="stat-label">This Month Income</p>
+            <p class="stat-detail">Placeholder data</p>
           </div>
         </div>
       </mat-card-content>
@@ -44,8 +59,11 @@
             <mat-icon>trending_down</mat-icon>
           </div>
           <div class="stat-info">
-            <h3 class="stat-value">₹8,750</h3>
+            <h3 class="stat-value">
+              ₹{{ stats.monthlyExpenses | number: '1.2-2' }}
+            </h3>
             <p class="stat-label">This Month Expenses</p>
+            <p class="stat-detail">Placeholder data</p>
           </div>
         </div>
       </mat-card-content>
@@ -58,8 +76,11 @@
             <mat-icon>savings</mat-icon>
           </div>
           <div class="stat-info">
-            <h3 class="stat-value">₹3,750</h3>
+            <h3 class="stat-value">
+              ₹{{ stats.monthlySavings | number: '1.2-2' }}
+            </h3>
             <p class="stat-label">Monthly Savings</p>
+            <p class="stat-detail">Income - Expenses</p>
           </div>
         </div>
       </mat-card-content>
@@ -67,7 +88,7 @@
   </div>
 
   <!-- Quick Actions -->
-  <div class="quick-actions">
+  <div class="quick-actions" *ngIf="!loading">
     <h2 class="section-title">Quick Actions</h2>
     <div class="action-grid">
       <mat-card class="action-card" routerLink="/transactions/add">
@@ -82,17 +103,84 @@
         <mat-card-content>
           <mat-icon class="action-icon">account_balance</mat-icon>
           <h3>Manage Accounts</h3>
-          <p>View and edit accounts</p>
+          <p>{{ stats.totalAccounts }} accounts</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="action-card" (click)="refreshData()">
+        <mat-card-content>
+          <mat-icon class="action-icon">refresh</mat-icon>
+          <h3>Refresh Data</h3>
+          <p>Update financial overview</p>
         </mat-card-content>
       </mat-card>
 
       <mat-card class="action-card" routerLink="/budgets">
         <mat-card-content>
           <mat-icon class="action-icon">pie_chart</mat-icon>
-          <h3>View Analytics</h3>
-          <p>Spending insights</p>
+          <h3>Budgets & Analytics</h3>
+          <p>Coming soon</p>
         </mat-card-content>
       </mat-card>
     </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="recent-transactions" *ngIf="!loading">
+    <div class="section-header">
+      <h2 class="section-title">Recent Transactions</h2>
+      <button mat-button color="primary" routerLink="/transactions">
+        View All
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <!-- Transactions List -->
+    <mat-card class="transactions-card">
+      <mat-card-content>
+        <!-- Empty state for now -->
+        <div class="empty-transactions">
+          <mat-icon class="empty-icon">receipt_long</mat-icon>
+          <h3>No Transactions Yet</h3>
+          <p>Start tracking your income and expenses</p>
+          <button
+            mat-raised-button
+            color="primary"
+            routerLink="transactions/add"
+          >
+            <mat-icon>add</mat-icon>
+            Add First Transaction
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Monthly Spending Chart -->
+  <div class="spending-chart" *ngIf="!loading">
+    <div class="section-header">
+      <h2 class="section-title">Monthly Spending Overview</h2>
+      <button
+        mat-icon-button
+        matTooltip="Refresh Chart"
+        (click)="refreshChart()"
+      >
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+
+    <mat-card class="chart-card">
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas
+            baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType"
+          >
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
