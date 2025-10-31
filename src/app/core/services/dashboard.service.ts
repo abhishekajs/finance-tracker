@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AccountService } from './account.service';
+import { TransactionService } from './transaction.service';
+import { Transaction } from '../models/transaction.models';
 
 export interface DashboardStats {
   totalBalance: number;
@@ -14,7 +16,10 @@ export interface DashboardStats {
   providedIn: 'root',
 })
 export class DashboardService {
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private transactionService: TransactionService,
+    private accountService: AccountService
+  ) {}
 
   getDashboardStats(): Observable<DashboardStats> {
     return this.accountService.getAccounts().pipe(
@@ -43,5 +48,9 @@ export class DashboardService {
   generateChartData(): number[] {
     const baseData = [3200, 1800, 2100, 800, 1500, 850];
     return baseData.map(value => value + Math.floor(Math.random() * 400) - 200);
+  }
+
+  getRecentTransactions(): Observable<Transaction[]> {
+    return this.transactionService.getTransactions({ limit: 5 });
   }
 }

@@ -1,0 +1,158 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.transactions-container {
+  max-width: rem(1200);
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: spacing(8);
+
+  .page-title {
+    font-size: rem(32);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .add-button {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+  }
+}
+
+.transactions-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.transactions-table {
+  width: 100%;
+
+  th {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: rem(14);
+  }
+
+  td {
+    padding: spacing(3) spacing(2);
+    border-bottom: 1px solid var(--neutral-200);
+  }
+
+  .description-cell {
+    .description-text {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: spacing(1);
+    }
+
+    .account-name {
+      display: block;
+      font-size: rem(12);
+      color: var(--text-secondary);
+    }
+  }
+
+  .account-cell {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+
+    .account-icon {
+      font-size: rem(18);
+      color: var(--primary-500);
+    }
+  }
+
+  .amount {
+    font-weight: 600;
+    font-size: rem(16);
+
+    &.income {
+      color: var(--success);
+    }
+
+    &.expense {
+      color: var(--error);
+    }
+
+    &.transfer {
+      color: var(--warning);
+    }
+  }
+}
+
+.empty-state,
+.loading-state {
+  text-align: center;
+  padding: spacing(10);
+
+  .empty-icon {
+    font-size: rem(64);
+    width: rem(64);
+    height: rem(64);
+    color: var(--neutral-400);
+    margin-bottom: spacing(4);
+  }
+
+  h3 {
+    font-size: rem(24);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 spacing(2) 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    margin-bottom: spacing(6);
+    font-size: rem(16);
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+    margin: 0 auto;
+  }
+}
+
+@include tablet-up {
+  .page-header {
+    .page-title {
+      font-size: rem(36);
+    }
+  }
+
+  .transactions-table {
+    .description-cell {
+      .account-name {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: #{breakpoint('tablet')}) {
+  .transactions-table {
+    .mat-column-account {
+      display: none;
+    }
+
+    .description-cell {
+      .account-name {
+        display: block;
+      }
+    }
+  }
+}
