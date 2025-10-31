@@ -91,7 +91,7 @@
   <div class="quick-actions" *ngIf="!loading">
     <h2 class="section-title">Quick Actions</h2>
     <div class="action-grid">
-      <mat-card class="action-card" routerLink="/transactions/add">
+      <mat-card class="action-card" (click)="openAddTransactionDialog()">
         <mat-card-content>
           <mat-icon class="action-icon">add</mat-icon>
           <h3>Add Transaction</h3>
@@ -138,15 +138,38 @@
     <!-- Transactions List -->
     <mat-card class="transactions-card">
       <mat-card-content>
-        <!-- Empty state for now -->
-        <div class="empty-transactions">
+        <div class="transaction-list" *ngIf="recentTransactions.length > 0">
+          <div
+            class="transaction-item"
+            *ngFor="let transaction of recentTransactions"
+          >
+            <div class="transaction-info">
+              <span class="transaction-description">{{
+                transaction.description
+              }}</span>
+              <span class="transaction-account">{{
+                transaction.account.name
+              }}</span>
+            </div>
+            <div
+              class="transaction-amount"
+              [class]="transaction.type.toLowerCase()"
+            >
+              {{ transaction.type === 'INCOME' ? '+' : '-' }}₹{{
+                transaction.amount | number: '1.0-0'
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-transactions" *ngIf="recentTransactions.length === 0">
           <mat-icon class="empty-icon">receipt_long</mat-icon>
           <h3>No Transactions Yet</h3>
           <p>Start tracking your income and expenses</p>
           <button
             mat-raised-button
             color="primary"
-            routerLink="transactions/add"
+            (click)="openAddTransactionDialog()"
           >
             <mat-icon>add</mat-icon>
             Add First Transaction

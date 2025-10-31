@@ -267,6 +267,7 @@
       display: flex;
       align-items: center;
       gap: spacing(2);
+      margin: 0 auto;
     }
   }
 }
@@ -311,6 +312,58 @@
 
     @include tablet-up {
       height: rem(350);
+    }
+  }
+}
+
+.transaction-list {
+  .transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: spacing(3) 0;
+    border-bottom: 1px solid var(--neutral-200);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .transaction-info {
+      flex: 1;
+
+      .transaction-description {
+        display: block;
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: rem(16);
+        margin-bottom: spacing(1);
+      }
+
+      .transaction-account {
+        display: block;
+        font-size: rem(12);
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    .transaction-amount {
+      font-weight: 600;
+      font-size: rem(16);
+      text-align: right;
+
+      &.income {
+        color: var(--success);
+      }
+
+      &.expense {
+        color: var(--error);
+      }
+
+      &.transfer {
+        color: var(--warning);
+      }
     }
   }
 }

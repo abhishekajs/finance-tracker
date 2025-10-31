@@ -29,7 +29,10 @@ export const routes: Routes = [
       },
       {
         path: 'transactions',
-        redirectTo: '/dashboard',
+        loadComponent: () =>
+          import(
+            './features/transactions/transaction-list/transaction-list.component'
+          ).then(m => m.TransactionListComponent),
       },
       { path: 'budgets', redirectTo: '/dashboard' },
       { path: 'analytics', redirectTo: '/dashboard' },

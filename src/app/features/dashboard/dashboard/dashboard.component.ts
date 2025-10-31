@@ -14,6 +14,10 @@ import {
 } from '../../../core/services/dashboard.service';
 import { User } from '../../../core/models/auth.models';
 import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TransactionFormComponent } from '../../transactions/transaction-form/transaction-form.component';
+import { Transaction } from '../../../core/models/transaction.models';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +30,7 @@ import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
     MatTooltipModule,
     RouterModule,
     BaseChartDirective,
+    MatDialogModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -46,9 +51,12 @@ export class DashboardComponent implements OnInit {
   chartData: ChartConfiguration['data'] = DASHBOARD_CHART_CONFIG.data;
   chartOptions: ChartConfiguration['options'] = DASHBOARD_CHART_CONFIG.options;
 
+  recentTransactions: Transaction[] = [];
+
   constructor(
     private authService: AuthService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -62,9 +70,13 @@ export class DashboardComponent implements OnInit {
   loadDashboardData(): void {
     this.loading = true;
 
-    this.dashboardService.getDashboardStats().subscribe({
-      next: stats => {
-        this.stats = stats;
+    forkJoin({
+      stats: this.dashboardService.getDashboardStats(),
+      transactions: this.dashboardService.getRecentTransactions(),
+    }).subscribe({
+      next: data => {
+        this.stats = data.stats;
+        this.recentTransactions = data.transactions;
         this.loading = false;
       },
       error: () => {
@@ -79,5 +91,18 @@ export class DashboardComponent implements OnInit {
 
   refreshChart(): void {
     this.chartData.datasets[0].data = this.dashboardService.generateChartData();
+  }
+
+  openAddTransactionDialog(): void {
+    const dialogRef = this.dialog.open(TransactionFormComponent, {
+      width: '600px',
+      data: { mode: 'create' },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadDashboardData();
+      }
+    });
   }
 }
