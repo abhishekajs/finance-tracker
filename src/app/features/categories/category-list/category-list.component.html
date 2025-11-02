@@ -1,0 +1,62 @@
+<div class="category-list-container">
+  <div class="header">
+    <h2>Categories</h2>
+    <div class="actions">
+      <button mat-stroked-button (click)="seedCategories()">
+        <mat-icon>add_circle</mat-icon>
+        Seed Default
+      </button>
+      <button mat-raised-button color="primary" (click)="openCategoryForm()">
+        <mat-icon>add</mat-icon>
+        Add Category
+      </button>
+    </div>
+  </div>
+
+  <mat-table [dataSource]="categories" class="category-table">
+    <ng-container matColumnDef="icon">
+      <mat-header-cell *matHeaderCellDef>Icon</mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        <mat-icon [style.color]="category.color">{{ category.icon }}</mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="color">
+      <mat-header-cell *matHeaderCellDef>Color</mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        <div
+          class="color-indicator"
+          [style.background-color]="category.color"
+        ></div>
+        {{ category.color }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="transactions">
+      <mat-header-cell *matHeaderCellDef>Transactions</mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        {{ category._count?.transactions || 0 }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let category">
+        <button mat-icon-button (click)="openCategoryForm(category)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteCategory(category)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
