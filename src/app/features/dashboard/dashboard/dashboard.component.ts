@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType } from 'chart.js';
@@ -11,12 +12,13 @@ import { AuthService } from '../../../core/services/auth.service';
 import {
   DashboardService,
   DashboardStats,
+  CategoryAnalytics,
 } from '../../../core/services/dashboard.service';
 import { User } from '../../../core/models/auth.models';
 import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TransactionFormComponent } from '../../transactions/transaction-form/transaction-form.component';
-import { Transaction } from '../../../core/models/transaction.models';
+import { Category, Transaction } from '../../../core/models/transaction.models';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -28,6 +30,7 @@ import { forkJoin } from 'rxjs';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatProgressBarModule,
     RouterModule,
     BaseChartDirective,
     MatDialogModule,
@@ -46,7 +49,12 @@ export class DashboardComponent implements OnInit {
     monthlySavings: 0,
   };
 
-  // Chart Configuration (imported from config)
+  categoryAnalytics: CategoryAnalytics = {
+    topCategories: [],
+    totalCategorizedSpending: 0,
+    uncategorizedSpending: 0,
+  };
+
   chartType: ChartType = DASHBOARD_CHART_CONFIG.type;
   chartData: ChartConfiguration['data'] = DASHBOARD_CHART_CONFIG.data;
   chartOptions: ChartConfiguration['options'] = DASHBOARD_CHART_CONFIG.options;
@@ -73,10 +81,12 @@ export class DashboardComponent implements OnInit {
     forkJoin({
       stats: this.dashboardService.getDashboardStats(),
       transactions: this.dashboardService.getRecentTransactions(),
+      categoryAnalytics: this.dashboardService.getCategoryAnalytics(),
     }).subscribe({
       next: data => {
         this.stats = data.stats;
         this.recentTransactions = data.transactions;
+        this.categoryAnalytics = data.categoryAnalytics;
         this.loading = false;
       },
       error: () => {

@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, forkJoin, map } from 'rxjs';
 import { AccountService } from './account.service';
 import { TransactionService } from './transaction.service';
-import { Transaction } from '../models/transaction.models';
+import { CategoryService } from './category.service';
+import { Transaction, TransactionType } from '../models/transaction.models';
+import { Category } from '../models/category.models';
 
 export interface DashboardStats {
   totalBalance: number;
@@ -12,13 +14,30 @@ export interface DashboardStats {
   monthlySavings: number;
 }
 
+export interface CategorySpending {
+  categoryId: string;
+  categoryName: string;
+  categoryIcon: string;
+  categoryColor: string;
+  amount: number;
+  percentage: number;
+  transactionCount: number;
+}
+
+export interface CategoryAnalytics {
+  topCategories: CategorySpending[];
+  totalCategorizedSpending: number;
+  uncategorizedSpending: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
   constructor(
     private transactionService: TransactionService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private categoryService: CategoryService
   ) {}
 
   getDashboardStats(): Observable<DashboardStats> {
@@ -39,6 +58,80 @@ export class DashboardService {
           monthlyIncome,
           monthlyExpenses,
           monthlySavings,
+        };
+      })
+    );
+  }
+
+  getCategoryAnalytics(): Observable<CategoryAnalytics> {
+    return forkJoin({
+      transactions: this.transactionService.getTransactions({ limit: 100 }),
+      categories: this.categoryService.getCategories(),
+    }).pipe(
+      map(({ transactions, categories }) => {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+
+        const monthlyExpenses = transactions.filter(t => {
+          const transactionDate = new Date(t.date);
+          return (
+            t.type === TransactionType.EXPENSE &&
+            transactionDate.getMonth() === currentMonth &&
+            transactionDate.getFullYear() === currentYear
+          );
+        });
+
+        const categorySpendingMap = new Map<string, number>();
+        const categoryCountMap = new Map<string, number>();
+        let uncategorizedSpending = 0;
+
+        monthlyExpenses.forEach(transaction => {
+          const amount = Number(transaction.amount);
+
+          if (transaction.categoryId) {
+            const currentAmount =
+              categorySpendingMap.get(transaction.categoryId) || 0;
+            const currentCount =
+              categoryCountMap.get(transaction.categoryId) || 0;
+            categorySpendingMap.set(
+              transaction.categoryId,
+              currentAmount + amount
+            );
+            categoryCountMap.set(transaction.categoryId, currentCount + 1);
+          } else {
+            uncategorizedSpending += amount;
+          }
+        });
+
+        const totalCategorizedSpending = Array.from(
+          categorySpendingMap.values()
+        ).reduce((sum, amount) => sum + amount, 0);
+
+        const totalSpending = totalCategorizedSpending + uncategorizedSpending;
+
+        const topCategories: CategorySpending[] = Array.from(
+          categorySpendingMap.entries()
+        )
+          .map(([categoryId, amount]) => {
+            const category = categories.find(c => c.id === categoryId);
+            return {
+              categoryId,
+              categoryName: category?.name || 'Unknown',
+              categoryIcon: category?.icon || 'help',
+              categoryColor: category?.color || '#666',
+              amount,
+              percentage:
+                totalSpending > 0 ? (amount / totalSpending) * 100 : 0,
+              transactionCount: categoryCountMap.get(categoryId) || 0,
+            };
+          })
+          .sort((a, b) => b.amount - a.amount)
+          .slice(0, 5);
+
+        return {
+          topCategories,
+          totalCategorizedSpending,
+          uncategorizedSpending,
         };
       })
     );
