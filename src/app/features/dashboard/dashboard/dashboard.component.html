@@ -46,7 +46,9 @@
               ₹{{ stats.monthlyIncome | number: '1.2-2' }}
             </h3>
             <p class="stat-label">This Month Income</p>
-            <p class="stat-detail">Placeholder data</p>
+            <p class="stat-detail">
+              {{ getMonthName() }} {{ getCurrentYear() }}
+            </p>
           </div>
         </div>
       </mat-card-content>
@@ -63,7 +65,9 @@
               ₹{{ stats.monthlyExpenses | number: '1.2-2' }}
             </h3>
             <p class="stat-label">This Month Expenses</p>
-            <p class="stat-detail">Placeholder data</p>
+            <p class="stat-detail">
+              {{ getMonthName() }} {{ getCurrentYear() }}
+            </p>
           </div>
         </div>
       </mat-card-content>
@@ -76,11 +80,13 @@
             <mat-icon>savings</mat-icon>
           </div>
           <div class="stat-info">
-            <h3 class="stat-value">
+            <h3 class="stat-value" [class.negative]="stats.monthlySavings < 0">
               ₹{{ stats.monthlySavings | number: '1.2-2' }}
             </h3>
             <p class="stat-label">Monthly Savings</p>
-            <p class="stat-detail">Income - Expenses</p>
+            <p class="stat-detail">
+              {{ stats.monthlySavings >= 0 ? 'Surplus' : 'Deficit' }}
+            </p>
           </div>
         </div>
       </mat-card-content>
@@ -279,7 +285,7 @@
       <button
         mat-icon-button
         matTooltip="Refresh Chart"
-        (click)="refreshChart()"
+        (click)="refreshData()"
       >
         <mat-icon>refresh</mat-icon>
       </button>

@@ -4,7 +4,7 @@ import { AccountService } from './account.service';
 import { TransactionService } from './transaction.service';
 import { CategoryService } from './category.service';
 import { Transaction, TransactionType } from '../models/transaction.models';
-import { Category } from '../models/category.models';
+import { ChartConfiguration } from 'chart.js';
 
 export interface DashboardStats {
   totalBalance: number;
@@ -41,15 +41,36 @@ export class DashboardService {
   ) {}
 
   getDashboardStats(): Observable<DashboardStats> {
-    return this.accountService.getAccounts().pipe(
-      map(accounts => {
+    return forkJoin({
+      accounts: this.accountService.getAccounts(),
+      transactions: this.transactionService.getTransactions({ limit: 1000 }),
+    }).pipe(
+      map(({ accounts, transactions }) => {
         const totalBalance = accounts.reduce(
           (sum, account) => sum + Number(account.balance),
           0
         );
         const totalAccounts = accounts.length;
-        const monthlyIncome = 12500; // Placeholder
-        const monthlyExpenses = 8750; // Placeholder
+
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+
+        const monthlyTransactions = transactions.filter(t => {
+          const transactionDate = new Date(t.date);
+          return (
+            transactionDate.getMonth() === currentMonth &&
+            transactionDate.getFullYear() === currentYear
+          );
+        });
+
+        const monthlyIncome = monthlyTransactions
+          .filter(t => t.type === TransactionType.INCOME)
+          .reduce((sum, t) => sum + Number(t.amount), 0);
+
+        const monthlyExpenses = monthlyTransactions
+          .filter(t => t.type === TransactionType.EXPENSE)
+          .reduce((sum, t) => sum + Number(t.amount), 0);
+
         const monthlySavings = monthlyIncome - monthlyExpenses;
 
         return {
@@ -137,13 +158,36 @@ export class DashboardService {
     );
   }
 
-  // Method to refresh chart data with variations
-  generateChartData(): number[] {
-    const baseData = [3200, 1800, 2100, 800, 1500, 850];
-    return baseData.map(value => value + Math.floor(Math.random() * 400) - 200);
-  }
-
   getRecentTransactions(): Observable<Transaction[]> {
     return this.transactionService.getTransactions({ limit: 5 });
+  }
+
+  generateCategoryChartData(
+    categoryAnalytics: CategoryAnalytics
+  ): ChartConfiguration['data'] {
+    const labels = categoryAnalytics.topCategories.map(c => c.categoryName);
+    const data = categoryAnalytics.topCategories.map(c => c.amount);
+    const colors = categoryAnalytics.topCategories.map(c => c.categoryColor);
+
+    if (categoryAnalytics.uncategorizedSpending > 0) {
+      labels.push('Uncategorized');
+      data.push(categoryAnalytics.uncategorizedSpending);
+      colors.push('#999999');
+    }
+
+    return {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor: colors,
+          borderColor: colors.map(color => color + '80'),
+          borderWidth: 2,
+          hoverBackgroundColor: colors.map(color => color + 'CC'),
+          hoverBorderColor: colors,
+          hoverBorderWidth: 3,
+        },
+      ],
+    };
   }
 }
