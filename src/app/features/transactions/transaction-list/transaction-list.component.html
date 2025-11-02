@@ -2,6 +2,39 @@
   <!-- Page Header -->
   <div class="page-header">
     <h1 class="page-title">Transactions</h1>
+
+    <!-- Category Filter -->
+    <div class="filters">
+      <mat-form-field appearance="outline" class="category-filter">
+        <mat-label>Filter by Category</mat-label>
+        <mat-select
+          [(value)]="selectedCategoryId"
+          (selectionChange)="onCategoryFilterChange()"
+        >
+          <!-- Custom trigger to show selected category properly -->
+          <mat-select-trigger>
+            <div class="selected-filter-category" *ngIf="selectedCategoryId">
+              <mat-icon [style.color]="getSelectedFilterCategoryColor()">
+                {{ getSelectedFilterCategoryIcon() }}
+              </mat-icon>
+              <span>{{ getSelectedFilterCategoryName() }}</span>
+            </div>
+            <span *ngIf="!selectedCategoryId">All Categories</span>
+          </mat-select-trigger>
+
+          <mat-option value="">All Categories</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            <div class="category-option">
+              <mat-icon [style.color]="category.color">{{
+                category.icon
+              }}</mat-icon>
+              <span>{{ category.name }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <button
       mat-raised-button
       color="primary"
@@ -36,6 +69,27 @@
                 }}</span>
                 <span class="account-name">{{ transaction.account.name }}</span>
               </div>
+            </td>
+          </ng-container>
+
+          <!-- Category Column -->
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let transaction">
+              <div
+                class="category-cell"
+                *ngIf="getCategoryById(transaction.categoryId); else noCategory"
+              >
+                <mat-icon
+                  [style.color]="getCategoryById(transaction.categoryId)?.color"
+                >
+                  {{ getCategoryById(transaction.categoryId)?.icon }}
+                </mat-icon>
+                <span>{{ getCategoryById(transaction.categoryId)?.name }}</span>
+              </div>
+              <ng-template #noCategory>
+                <span class="no-category">No Category</span>
+              </ng-template>
             </td>
           </ng-container>
 
