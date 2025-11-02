@@ -19,6 +19,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { TransactionService } from '../../../core/services/transaction.service';
+import { CategoryService } from '../../../core/services/category.service';
 import { AccountService } from '../../../core/services/account.service';
 import {
   Transaction,
@@ -27,6 +28,7 @@ import {
   UpdateTransactionRequest,
 } from '../../../core/models/transaction.models';
 import { Account } from '../../../core/models/account.models';
+import { Category } from '../../../core/models/category.models';
 
 interface DialogData {
   mode: 'create' | 'edit';
@@ -55,12 +57,14 @@ export class TransactionFormComponent implements OnInit {
   transactionForm: FormGroup;
   loading = false;
   accounts: Account[] = [];
+  categories: Category[] = [];
   transactionTypes = Object.values(TransactionType);
 
   constructor(
     private fb: FormBuilder,
     private transactionService: TransactionService,
     private accountService: AccountService,
+    private categoryService: CategoryService,
     public dialogRef: MatDialogRef<TransactionFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
@@ -69,12 +73,14 @@ export class TransactionFormComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(2)]],
       type: ['', Validators.required],
       accountId: ['', Validators.required],
+      categoryId: [''],
       date: [new Date(), Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.loadAccounts();
+    this.loadCategories();
 
     if (this.data.mode === 'edit' && this.data.transaction) {
       this.transactionForm.patchValue({
@@ -82,6 +88,7 @@ export class TransactionFormComponent implements OnInit {
         description: this.data.transaction.description,
         type: this.data.transaction.type,
         accountId: this.data.transaction.accountId,
+        categoryId: this.data.transaction.categoryId || '',
         date: new Date(this.data.transaction.date),
       });
     }
@@ -91,6 +98,14 @@ export class TransactionFormComponent implements OnInit {
     this.accountService.getAccounts().subscribe({
       next: accounts => {
         this.accounts = accounts;
+      },
+    });
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: categories => {
+        this.categories = categories;
       },
     });
   }
@@ -114,6 +129,7 @@ export class TransactionFormComponent implements OnInit {
       description: formValue.description,
       type: formValue.type,
       accountId: formValue.accountId,
+      categoryId: formValue.categoryId || undefined,
       date: formValue.date.toISOString(),
     };
 
@@ -134,6 +150,7 @@ export class TransactionFormComponent implements OnInit {
       description: formValue.description,
       type: formValue.type,
       accountId: formValue.accountId,
+      categoryId: formValue.categoryId || undefined,
       date: formValue.date.toISOString(),
     };
 
@@ -172,5 +189,23 @@ export class TransactionFormComponent implements OnInit {
 
   get dialogTitle(): string {
     return this.isEditMode ? 'Edit Transaction' : 'Add New Transaction';
+  }
+
+  getSelectedCategoryColor(): string {
+    const categoryId = this.transactionForm.get('categoryId')?.value;
+    const category = this.categories.find(c => c.id === categoryId);
+    return category?.color || '#666';
+  }
+
+  getSelectedCategoryIcon(): string {
+    const categoryId = this.transactionForm.get('categoryId')?.value;
+    const category = this.categories.find(c => c.id === categoryId);
+    return category?.icon || 'label';
+  }
+
+  getSelectedCategoryName(): string {
+    const categoryId = this.transactionForm.get('categoryId')?.value;
+    const category = this.categories.find(c => c.id === categoryId);
+    return category?.name || '';
   }
 }

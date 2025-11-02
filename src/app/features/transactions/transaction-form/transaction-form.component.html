@@ -76,6 +76,39 @@
         </mat-error>
       </mat-form-field>
 
+      <!-- Category -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Category (Optional)</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-select-trigger>
+            <div
+              class="selected-category"
+              *ngIf="transactionForm.get('categoryId')?.value"
+            >
+              <mat-icon [style.color]="getSelectedCategoryColor()">
+                {{ getSelectedCategoryIcon() }}
+              </mat-icon>
+              <span>{{ getSelectedCategoryName() }}</span>
+            </div>
+            <span *ngIf="!transactionForm.get('categoryId')?.value">
+              <em>No Category</em>
+            </span>
+          </mat-select-trigger>
+          <mat-option value="">
+            <em>No Category</em>
+          </mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            <div class="category-option">
+              <mat-icon [style.color]="category.color">{{
+                category.icon
+              }}</mat-icon>
+              <span>{{ category.name }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>label</mat-icon>
+      </mat-form-field>
+
       <!-- Date -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Date</mat-label>

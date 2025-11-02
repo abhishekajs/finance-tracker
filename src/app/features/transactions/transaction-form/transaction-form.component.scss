@@ -68,3 +68,33 @@ button[disabled] {
     min-width: rem(600);
   }
 }
+
+.category-option {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+
+  mat-icon {
+    font-size: rem(20);
+    width: rem(20);
+    height: rem(20);
+  }
+}
+
+.account-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selected-category {
+  display: flex;
+  align-items: center;
+  gap: spacing(2);
+
+  mat-icon {
+    font-size: rem(20);
+    width: rem(20);
+    height: rem(20);
+  }
+}
