@@ -18,7 +18,7 @@ import { User } from '../../../core/models/auth.models';
 import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TransactionFormComponent } from '../../transactions/transaction-form/transaction-form.component';
-import { Category, Transaction } from '../../../core/models/transaction.models';
+import { Transaction } from '../../../core/models/transaction.models';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
   };
 
   chartType: ChartType = DASHBOARD_CHART_CONFIG.type;
-  chartData: ChartConfiguration['data'] = DASHBOARD_CHART_CONFIG.data;
+  chartData: ChartConfiguration['data'] = { ...DASHBOARD_CHART_CONFIG.data };
   chartOptions: ChartConfiguration['options'] = DASHBOARD_CHART_CONFIG.options;
 
   recentTransactions: Transaction[] = [];
@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit {
         this.stats = data.stats;
         this.recentTransactions = data.transactions;
         this.categoryAnalytics = data.categoryAnalytics;
+        this.updateChartWithRealData();
         this.loading = false;
       },
       error: () => {
@@ -95,12 +96,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  refreshData(): void {
-    this.loadDashboardData();
+  updateChartWithRealData(): void {
+    if (this.categoryAnalytics.topCategories.length > 0) {
+      this.chartData = this.dashboardService.generateCategoryChartData(
+        this.categoryAnalytics
+      );
+      this.chartOptions = DASHBOARD_CHART_CONFIG.options;
+    }
   }
 
-  refreshChart(): void {
-    this.chartData.datasets[0].data = this.dashboardService.generateChartData();
+  refreshData(): void {
+    this.loadDashboardData();
   }
 
   openAddTransactionDialog(): void {
@@ -114,5 +120,27 @@ export class DashboardComponent implements OnInit {
         this.loadDashboardData();
       }
     });
+  }
+
+  getMonthName(): string {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[new Date().getMonth()];
+  }
+
+  getCurrentYear(): number {
+    return new Date().getFullYear();
   }
 }

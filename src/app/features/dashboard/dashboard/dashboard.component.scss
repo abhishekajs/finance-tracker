@@ -108,6 +108,10 @@
       font-weight: 700;
       color: var(--text-primary);
       margin: 0 0 spacing(1) 0;
+
+      &.negative {
+        color: var(--error) !important;
+      }
     }
 
     .stat-label {

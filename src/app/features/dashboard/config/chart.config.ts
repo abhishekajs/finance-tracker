@@ -4,25 +4,11 @@ export const DASHBOARD_CHART_CONFIG = {
   type: 'doughnut' as ChartType,
 
   data: {
-    labels: [
-      'Food & Dining',
-      'Transportation',
-      'Shopping',
-      'Entertainment',
-      'Bills & Utilities',
-      'Others',
-    ],
+    labels: [],
     datasets: [
       {
-        data: [3200, 1800, 2100, 800, 1500, 850],
-        backgroundColor: [
-          '#FF6384',
-          '#36A2EB',
-          '#FFCE56',
-          '#4BC0C0',
-          '#9966FF',
-          '#FF9F40',
-        ],
+        data: [],
+        backgroundColor: [],
         borderWidth: 2,
         borderColor: '#ffffff',
         hoverBorderWidth: 3,
