@@ -1,0 +1,70 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.category-list-container {
+  padding: spacing(6);
+  max-width: rem(1200);
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: spacing(8);
+
+    h2 {
+      margin: 0;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      gap: spacing(4);
+
+      button {
+        @include button-base;
+        display: flex;
+        align-items: center;
+        gap: spacing(2);
+      }
+    }
+  }
+
+  .category-table {
+    width: 100%;
+    background: white;
+    border-radius: rem(8);
+    @include card-shadow(1);
+
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #666;
+    }
+
+    .color-indicator {
+      width: rem(20);
+      height: rem(20);
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: spacing(2);
+      vertical-align: middle;
+      border: rem(2) solid #fff;
+      @include card-shadow(1);
+    }
+  }
+
+  @include tablet-up {
+    padding: spacing(4);
+
+    .header {
+      flex-direction: column;
+      gap: spacing(4);
+      align-items: stretch;
+
+      .actions {
+        justify-content: center;
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit Category' : 'Add Category' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="categoryForm" class="category-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category Name</mat-label>
+      <input
+        matInput
+        formControlName="name"
+        placeholder="Enter category name"
+      />
+      <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">
+        Category name is required
+      </mat-error>
+      <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
+        Category name must be at least 2 characters
+      </mat-error>
+    </mat-form-field>
+
+    <div class="color-selection">
+      <label>Color</label>
+      <div class="color-grid">
+        <div
+          *ngFor="let color of availableColors"
+          class="color-option"
+          [class.selected]="categoryForm.get('color')?.value === color"
+          [style.background-color]="color"
+          (click)="selectColor(color)"
+        ></div>
+      </div>
+    </div>
+
+    <div class="icon-selection">
+      <label>Icon</label>
+      <div class="icon-grid">
+        <div
+          *ngFor="let icon of availableIcons"
+          class="icon-option"
+          [class.selected]="categoryForm.get('icon')?.value === icon"
+          (click)="selectIcon(icon)"
+        >
+          <mat-icon [style.color]="categoryForm.get('color')?.value">{{
+            icon
+          }}</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <label>Preview</label>
+      <div class="preview-item">
+        <mat-icon [style.color]="categoryForm.get('color')?.value">
+          {{ categoryForm.get('icon')?.value }}
+        </mat-icon>
+        <span>{{ categoryForm.get('name')?.value || 'Category Name' }}</span>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="!categoryForm.valid"
+  >
+    {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

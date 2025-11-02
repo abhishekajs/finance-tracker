@@ -1,0 +1,118 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.category-form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(6);
+  min-width: rem(350);
+
+  .full-width {
+    width: 100%;
+  }
+
+  .color-selection,
+  .icon-selection {
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: spacing(2);
+      color: #666;
+    }
+  }
+
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: spacing(2);
+
+    .color-option {
+      width: rem(40);
+      height: rem(40);
+      border-radius: 50%;
+      cursor: pointer;
+      border: rem(3) solid transparent;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+
+      &.selected {
+        border-color: #333;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .icon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: spacing(2);
+
+    .icon-option {
+      width: rem(48);
+      height: rem(48);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: rem(2) solid transparent;
+      border-radius: rem(8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      &.selected {
+        border-color: #3f51b5;
+        background-color: rgba(63, 81, 181, 0.1);
+      }
+
+      mat-icon {
+        font-size: rem(24);
+        width: rem(24);
+        height: rem(24);
+      }
+    }
+  }
+
+  .preview {
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: spacing(2);
+      color: #666;
+    }
+
+    .preview-item {
+      display: flex;
+      align-items: center;
+      gap: spacing(2);
+      padding: spacing(3);
+      background-color: #f5f5f5;
+      border-radius: rem(8);
+
+      mat-icon {
+        font-size: rem(24);
+        width: rem(24);
+        height: rem(24);
+      }
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.dialog-actions {
+  justify-content: flex-end;
+  gap: spacing(2);
+  padding: spacing(4);
+
+  button {
+    @include button-base;
+  }
+}
