@@ -18,7 +18,7 @@ import { User } from '../../../core/models/auth.models';
 import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TransactionFormComponent } from '../../transactions/transaction-form/transaction-form.component';
-import { Transaction } from '../../../core/models/transaction.models';
+import { Category, Transaction } from '../../../core/models/transaction.models';
 import { forkJoin } from 'rxjs';
 
 @Component({
