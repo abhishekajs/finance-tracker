@@ -179,6 +179,99 @@
     </mat-card>
   </div>
 
+  <!-- Category Analytics -->
+  <div class="category-analytics" *ngIf="!loading">
+    <div class="section-header">
+      <h2 class="section-title">Spending by Category</h2>
+      <button mat-button color="primary" routerLink="/categories">
+        Manage Categories
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+
+    <mat-card class="analytics-card">
+      <mat-card-content>
+        <!-- Top Categories -->
+        <div
+          class="category-breakdown"
+          *ngIf="categoryAnalytics.topCategories.length > 0"
+        >
+          <div
+            class="category-item"
+            *ngFor="let category of categoryAnalytics.topCategories"
+          >
+            <div class="category-info">
+              <div class="category-icon-name">
+                <mat-icon [style.color]="category.categoryColor">
+                  {{ category.categoryIcon }}
+                </mat-icon>
+                <span class="category-name">{{ category.categoryName }}</span>
+              </div>
+              <div class="category-stats">
+                <span class="category-amount"
+                  >₹{{ category.amount | number: '1.0-0' }}</span
+                >
+                <span class="category-count"
+                  >{{ category.transactionCount }} transactions</span
+                >
+              </div>
+            </div>
+            <div class="category-progress">
+              <mat-progress-bar
+                mode="determinate"
+                [value]="category.percentage"
+                [color]="'primary'"
+              >
+              </mat-progress-bar>
+              <span class="percentage"
+                >{{ category.percentage | number: '1.0-0' }}%</span
+              >
+            </div>
+          </div>
+
+          <!-- Uncategorized spending -->
+          <div
+            class="category-item"
+            *ngIf="categoryAnalytics.uncategorizedSpending > 0"
+          >
+            <div class="category-info">
+              <div class="category-icon-name">
+                <mat-icon style="color: #999">help_outline</mat-icon>
+                <span class="category-name">Uncategorized</span>
+              </div>
+              <div class="category-stats">
+                <span class="category-amount"
+                  >₹{{
+                    categoryAnalytics.uncategorizedSpending | number: '1.0-0'
+                  }}</span
+                >
+                <span class="category-count">No category assigned</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          class="empty-categories"
+          *ngIf="categoryAnalytics.topCategories.length === 0"
+        >
+          <mat-icon class="empty-icon">pie_chart</mat-icon>
+          <h3>No Category Data</h3>
+          <p>Add transactions with categories to see spending breakdown</p>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="openAddTransactionDialog()"
+          >
+            <mat-icon>add</mat-icon>
+            Add Transaction
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <!-- Monthly Spending Chart -->
   <div class="spending-chart" *ngIf="!loading">
     <div class="section-header">

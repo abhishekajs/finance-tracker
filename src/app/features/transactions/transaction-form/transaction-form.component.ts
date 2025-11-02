@@ -56,6 +56,7 @@ interface DialogData {
 export class TransactionFormComponent implements OnInit {
   transactionForm: FormGroup;
   loading = false;
+  errorMessage = '';
   accounts: Account[] = [];
   categories: Category[] = [];
   transactionTypes = Object.values(TransactionType);
@@ -137,8 +138,12 @@ export class TransactionFormComponent implements OnInit {
       next: () => {
         this.dialogRef.close(true);
       },
-      error: () => {
+      error: error => {
         this.loading = false;
+        this.errorMessage =
+          error.error?.error ||
+          error.error?.message ||
+          'Failed to create transaction';
       },
     });
   }
@@ -160,10 +165,20 @@ export class TransactionFormComponent implements OnInit {
         next: () => {
           this.dialogRef.close(true);
         },
-        error: () => {
+        error: error => {
           this.loading = false;
+          this.errorMessage =
+            error.error?.error ||
+            error.error?.message ||
+            'Failed to update transaction';
         },
       });
+  }
+
+  onFormChange(): void {
+    if (this.errorMessage) {
+      this.errorMessage = '';
+    }
   }
 
   onCancel(): void {
