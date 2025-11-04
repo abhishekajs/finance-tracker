@@ -1,0 +1,120 @@
+@import '../../../../styles/variables';
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.budget-list-container {
+  @include container-padding;
+
+  .header {
+    @include flex-between;
+    margin-bottom: rem(24);
+
+    h1 {
+      @include heading-large;
+      margin: 0;
+    }
+  }
+
+  .table-container {
+    @include card-style;
+    overflow-x: auto;
+
+    .budget-table {
+      width: 100%;
+
+      .budget-name {
+        display: flex;
+        flex-direction: column;
+        gap: rem(4);
+
+        .date-range {
+          color: $text-secondary;
+          font-size: rem(12);
+        }
+      }
+
+      .category-info {
+        display: flex;
+        align-items: center;
+        gap: rem(8);
+
+        mat-icon {
+          font-size: rem(18);
+        }
+      }
+
+      .amount-info {
+        display: flex;
+        flex-direction: column;
+        gap: rem(2);
+
+        .budget-amount {
+          font-weight: 600;
+        }
+
+        .spent-amount {
+          font-size: rem(12);
+          color: $text-secondary;
+        }
+      }
+
+      .progress-container {
+        display: flex;
+        flex-direction: column;
+        gap: rem(4);
+        min-width: rem(100);
+
+        .progress-text {
+          font-size: rem(12);
+          text-align: center;
+          color: $text-secondary;
+        }
+      }
+    }
+
+    .empty-state {
+      @include flex-center;
+      flex-direction: column;
+      padding: rem(48);
+      text-align: center;
+
+      mat-icon {
+        font-size: rem(64);
+        width: rem(64);
+        height: rem(64);
+        color: $text-secondary;
+        margin-bottom: rem(16);
+      }
+
+      h3 {
+        margin: 0 0 rem(8) 0;
+        color: $text-primary;
+      }
+
+      p {
+        margin: 0 0 rem(24) 0;
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .budget-list-container {
+    .header {
+      flex-direction: column;
+      gap: rem(16);
+      align-items: stretch;
+    }
+
+    .table-container {
+      .budget-table {
+        font-size: rem(14);
+
+        .progress-container {
+          min-width: rem(80);
+        }
+      }
+    }
+  }
+}

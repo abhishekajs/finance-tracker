@@ -50,3 +50,59 @@
   transition: all 0.2s ease;
   min-height: rem(44); // Touch-friendly
 }
+
+// Container padding mixin
+@mixin container-padding {
+  padding: rem(16);
+
+  @include tablet-up {
+    padding: rem(24);
+  }
+
+  @include desktop-up {
+    padding: rem(32);
+  }
+}
+
+// Flex utilities
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Typography mixins
+@mixin heading-large {
+  font-size: rem(24);
+  font-weight: 600;
+  line-height: 1.2;
+
+  @include tablet-up {
+    font-size: rem(28);
+  }
+}
+
+// Card style mixin
+@mixin card-style {
+  background: #fff;
+  border-radius: rem(8);
+  @include card-shadow(1);
+  padding: rem(16);
+
+  @include tablet-up {
+    padding: rem(24);
+  }
+}
+
+// Mobile mixin
+@mixin mobile {
+  @media (max-width: #{breakpoint('tablet') - 1px}) {
+    @content;
+  }
+}

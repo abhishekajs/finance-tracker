@@ -41,7 +41,13 @@ export const routes: Routes = [
             './features/categories/category-list/category-list.component'
           ).then(m => m.CategoryListComponent),
       },
-      { path: 'budgets', redirectTo: '/dashboard' },
+      {
+        path: 'budgets',
+        loadComponent: () =>
+          import('./features/budgets/budget-list/budget-list.component').then(
+            m => m.BudgetListComponent
+          ),
+      },
       { path: 'analytics', redirectTo: '/dashboard' },
     ],
   },
