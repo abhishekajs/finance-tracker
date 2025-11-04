@@ -1,0 +1,134 @@
+<div class="budget-form-container">
+  <h2 mat-dialog-title>{{ isEditMode ? 'Edit Budget' : 'Create Budget' }}</h2>
+
+  <form [formGroup]="budgetForm" (ngSubmit)="onSubmit()" class="budget-form">
+    <mat-dialog-content>
+      <!-- Budget Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Budget Name</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="e.g., Monthly Groceries"
+        />
+        <mat-error *ngIf="budgetForm.get('name')?.hasError('required')">
+          Budget name is required
+        </mat-error>
+        <mat-error *ngIf="budgetForm.get('name')?.hasError('minlength')">
+          Budget name must be at least 2 characters
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Budget Amount -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Budget Amount</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="amount"
+          placeholder="0"
+        />
+        <span matTextPrefix>₹&nbsp;</span>
+        <mat-error *ngIf="budgetForm.get('amount')?.hasError('required')">
+          Budget amount is required
+        </mat-error>
+        <mat-error *ngIf="budgetForm.get('amount')?.hasError('min')">
+          Budget amount must be greater than 0
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Budget Period -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Budget Period</mat-label>
+        <mat-select formControlName="period">
+          <mat-option *ngFor="let period of budgetPeriods" [value]="period[0]">
+            {{ period[1] }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Category Selection -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Category (Optional)</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-select-trigger>
+            <div
+              class="selected-category"
+              *ngIf="
+                budgetForm.get('categoryId')?.value;
+                else allCategoriesText
+              "
+            >
+              <ng-container *ngFor="let category of categories">
+                <div
+                  *ngIf="category.id === budgetForm.get('categoryId')?.value"
+                  class="category-option"
+                >
+                  <mat-icon [style.color]="category.color">{{
+                    category.icon
+                  }}</mat-icon>
+                  <span>{{ category.name }}</span>
+                </div>
+              </ng-container>
+            </div>
+            <ng-template #allCategoriesText>All Categories</ng-template>
+          </mat-select-trigger>
+
+          <mat-option value="">All Categories</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            <div class="category-option">
+              <mat-icon [style.color]="category.color">{{
+                category.icon
+              }}</mat-icon>
+              <span>{{ category.name }}</span>
+            </div>
+          </mat-option>
+        </mat-select>
+        <mat-hint>Leave empty to track spending across all categories</mat-hint>
+      </mat-form-field>
+
+      <!-- Date Range -->
+      <div class="date-range">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>Start Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startPicker"
+            formControlName="startDate"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="startPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>End Date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endPicker"
+            formControlName="endDate"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="endPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="dialog-actions">
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="budgetForm.invalid"
+      >
+        {{ isEditMode ? 'Update' : 'Create' }} Budget
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

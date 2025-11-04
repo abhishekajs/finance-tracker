@@ -1,0 +1,131 @@
+<div class="budget-list-container">
+  <div class="header">
+    <h1>Budget Management</h1>
+    <button mat-raised-button color="primary" (click)="openBudgetForm()">
+      <mat-icon>add</mat-icon>
+      Add Budget
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="budgets" class="budget-table">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let budget">
+          <div class="budget-name">
+            <strong>{{ budget.name }}</strong>
+            <small class="date-range">
+              {{ budget.startDate | date: 'MMM d' }} -
+              {{ budget.endDate | date: 'MMM d, y' }}
+            </small>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Category Column -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let budget">
+          <div
+            class="category-info"
+            *ngIf="budget.category; else allCategories"
+          >
+            <mat-icon [style.color]="budget.category.color">{{
+              budget.category.icon
+            }}</mat-icon>
+            <span>{{ budget.category.name }}</span>
+          </div>
+          <ng-template #allCategories>
+            <mat-chip color="accent">All Categories</mat-chip>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Period Column -->
+      <ng-container matColumnDef="period">
+        <th mat-header-cell *matHeaderCellDef>Period</th>
+        <td mat-cell *matCellDef="let budget">
+          {{ getPeriodLabel(budget.period) }}
+        </td>
+      </ng-container>
+
+      <!-- Amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Budget</th>
+        <td mat-cell *matCellDef="let budget">
+          <div class="amount-info">
+            <div class="budget-amount">{{ formatCurrency(budget.amount) }}</div>
+            <div class="spent-amount">
+              {{ formatCurrency(budget.spent) }} spent
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Progress Column -->
+      <ng-container matColumnDef="progress">
+        <th mat-header-cell *matHeaderCellDef>Progress</th>
+        <td mat-cell *matCellDef="let budget">
+          <div class="progress-container">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="budget.percentage"
+              [color]="budget.status === 'EXCEEDED' ? 'warn' : 'primary'"
+            ></mat-progress-bar>
+            <span class="progress-text"
+              >{{ budget.percentage.toFixed(0) }}%</span
+            >
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let budget">
+          <mat-chip
+            [style.background-color]="getStatusColor(budget.status)"
+            [style.color]="'white'"
+          >
+            {{ budget.status.replace('_', ' ') }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let budget">
+          <button
+            mat-icon-button
+            (click)="openBudgetForm(budget)"
+            matTooltip="Edit"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="deleteBudget(budget)"
+            matTooltip="Delete"
+            color="warn"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <div class="empty-state" *ngIf="budgets.length === 0">
+      <mat-icon>savings</mat-icon>
+      <h3>No budgets yet</h3>
+      <p>Create your first budget to start tracking your spending</p>
+      <button mat-raised-button color="primary" (click)="openBudgetForm()">
+        Create Budget
+      </button>
+    </div>
+  </div>
+</div>
