@@ -13,13 +13,15 @@ import {
   DashboardService,
   DashboardStats,
   CategoryAnalytics,
+  BudgetSummary,
 } from '../../../core/services/dashboard.service';
 import { User } from '../../../core/models/auth.models';
 import { DASHBOARD_CHART_CONFIG } from '../config/chart.config';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TransactionFormComponent } from '../../transactions/transaction-form/transaction-form.component';
-import { Category, Transaction } from '../../../core/models/transaction.models';
+import { Transaction } from '../../../core/models/transaction.models';
 import { forkJoin } from 'rxjs';
+import { BudgetService } from '../../../core/services/budget.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,10 +63,20 @@ export class DashboardComponent implements OnInit {
 
   recentTransactions: Transaction[] = [];
 
+  budgetSummary: BudgetSummary = {
+    totalBudgets: 0,
+    activeBudgets: 0,
+    budgetsOnTrack: 0,
+    budgetsExceeded: 0,
+    totalBudgetAmount: 0,
+    totalSpent: 0,
+  };
+
   constructor(
     private authService: AuthService,
     private dashboardService: DashboardService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private budgetService: BudgetService
   ) {}
 
   ngOnInit(): void {
@@ -82,11 +94,13 @@ export class DashboardComponent implements OnInit {
       stats: this.dashboardService.getDashboardStats(),
       transactions: this.dashboardService.getRecentTransactions(),
       categoryAnalytics: this.dashboardService.getCategoryAnalytics(),
+      budgetSummary: this.dashboardService.getBudgetSummary(),
     }).subscribe({
       next: data => {
         this.stats = data.stats;
         this.recentTransactions = data.transactions;
         this.categoryAnalytics = data.categoryAnalytics;
+        this.budgetSummary = data.budgetSummary;
         this.updateChartWithRealData();
         this.loading = false;
       },

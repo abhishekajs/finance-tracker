@@ -1,0 +1,286 @@
+<div class="analytics-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Financial Analytics</h1>
+    <div class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Time Period</mat-label>
+        <mat-select [formControl]="monthsControl">
+          <mat-option [value]="3">Last 3 Months</mat-option>
+          <mat-option [value]="6">Last 6 Months</mat-option>
+          <mat-option [value]="12">Last 12 Months</mat-option>
+          <mat-option [value]="24">Last 2 Years</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>View</mat-label>
+        <mat-select [formControl]="periodControl">
+          <mat-option value="monthly">Monthly</mat-option>
+          <mat-option value="yearly">Yearly</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-icon-button (click)="refreshData()" matTooltip="Refresh Data">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-card>
+      <mat-card-content>
+        <div class="loading-content">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Loading analytics data...</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Analytics Content -->
+  <div class="analytics-content" *ngIf="!loading">
+    <!-- Financial Summary Cards -->
+    <div class="summary-cards">
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-item">
+            <mat-icon class="summary-icon income">trending_up</mat-icon>
+            <div class="summary-info">
+              <h3>{{ formatCurrency(financialSummary.totalIncome) }}</h3>
+              <p>Total Income</p>
+              <small
+                >Avg:
+                {{
+                  formatCurrency(financialSummary.averageMonthlyIncome)
+                }}/month</small
+              >
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-item">
+            <mat-icon class="summary-icon expense">trending_down</mat-icon>
+            <div class="summary-info">
+              <h3>{{ formatCurrency(financialSummary.totalExpenses) }}</h3>
+              <p>Total Expenses</p>
+              <small
+                >Avg:
+                {{
+                  formatCurrency(financialSummary.averageMonthlyExpenses)
+                }}/month</small
+              >
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-item">
+            <mat-icon
+              class="summary-icon savings"
+              [class.negative]="financialSummary.totalSavings < 0"
+            >
+              savings
+            </mat-icon>
+            <div class="summary-info">
+              <h3 [class.negative]="financialSummary.totalSavings < 0">
+                {{ formatCurrency(financialSummary.totalSavings) }}
+              </h3>
+              <p>Net Savings</p>
+              <small
+                >Rate:
+                {{ formatPercentage(financialSummary.savingsRate) }}</small
+              >
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="summary-card">
+        <mat-card-content>
+          <div class="summary-item">
+            <mat-icon class="summary-icon category">pie_chart</mat-icon>
+            <div class="summary-info">
+              <h3>{{ financialSummary.topExpenseCategory }}</h3>
+              <p>Top Expense Category</p>
+              <small>Highest spending area</small>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-section">
+      <!-- Spending Trends Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Spending Trends</mat-card-title>
+          <mat-card-subtitle
+            >Income, expenses, and savings over time</mat-card-subtitle
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="spendingChartData"
+              [options]="spendingChartOptions"
+              [type]="spendingChartType"
+            ></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Income vs Expenses Chart -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Income vs Expenses</mat-card-title>
+          <mat-card-subtitle>Monthly comparison</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas
+              baseChart
+              [data]="incomeChartData"
+              [options]="incomeChartOptions"
+              [type]="incomeChartType"
+            ></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Category Analysis -->
+    <div class="category-section">
+      <mat-card class="category-card">
+        <mat-card-header>
+          <mat-card-title>Category Spending</mat-card-title>
+          <mat-card-subtitle>Top spending categories</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="category-chart-container">
+            <canvas
+              baseChart
+              [data]="categoryChartData"
+              [options]="categoryChartOptions"
+              [type]="categoryChartType"
+            ></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="trends-card">
+        <mat-card-header>
+          <mat-card-title>Category Trends</mat-card-title>
+          <mat-card-subtitle>Spending patterns by category</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="trends-list" *ngIf="categoryTrends.length > 0">
+            <div
+              class="trend-item"
+              *ngFor="let trend of categoryTrends.slice(0, 5)"
+            >
+              <div class="trend-info">
+                <div class="category-info">
+                  <mat-icon [style.color]="trend.categoryColor">{{
+                    trend.categoryIcon
+                  }}</mat-icon>
+                  <span class="category-name">{{ trend.categoryName }}</span>
+                </div>
+                <div class="trend-stats">
+                  <span class="amount">{{
+                    formatCurrency(trend.totalAmount)
+                  }}</span>
+                  <span class="average"
+                    >Avg: {{ formatCurrency(trend.averageMonthly) }}/month</span
+                  >
+                </div>
+              </div>
+              <div class="trend-indicator">
+                <mat-chip [style.background-color]="getTrendColor(trend.trend)">
+                  <mat-icon>{{ getTrendIcon(trend.trend) }}</mat-icon>
+                  {{ trend.trend }}
+                </mat-chip>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty-trends" *ngIf="categoryTrends.length === 0">
+            <mat-icon>trending_flat</mat-icon>
+            <p>No category trends available</p>
+            <small>Add more transactions to see trends</small>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Insights Section -->
+    <div class="insights-section">
+      <mat-card class="insights-card">
+        <mat-card-header>
+          <mat-card-title>Financial Insights</mat-card-title>
+          <mat-card-subtitle>Key observations from your data</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="insights-list">
+            <div class="insight-item">
+              <mat-icon class="insight-icon">star</mat-icon>
+              <div class="insight-content">
+                <h4>Best Income Month</h4>
+                <p>{{ financialSummary.topIncomeMonth }}</p>
+              </div>
+            </div>
+
+            <div class="insight-item">
+              <mat-icon class="insight-icon warning">warning</mat-icon>
+              <div class="insight-content">
+                <h4>Highest Expense Month</h4>
+                <p>{{ financialSummary.highestExpenseMonth }}</p>
+              </div>
+            </div>
+
+            <div class="insight-item">
+              <mat-icon
+                class="insight-icon"
+                [class.positive]="financialSummary.savingsRate > 20"
+                [class.negative]="financialSummary.savingsRate < 0"
+              >
+                {{
+                  financialSummary.savingsRate > 20
+                    ? 'thumb_up'
+                    : financialSummary.savingsRate < 0
+                      ? 'thumb_down'
+                      : 'thumbs_up_down'
+                }}
+              </mat-icon>
+              <div class="insight-content">
+                <h4>Savings Rate</h4>
+                <p>
+                  {{ formatPercentage(financialSummary.savingsRate) }}
+                  <span class="savings-status">
+                    {{
+                      financialSummary.savingsRate > 20
+                        ? '(Excellent!)'
+                        : financialSummary.savingsRate > 10
+                          ? '(Good)'
+                          : financialSummary.savingsRate > 0
+                            ? '(Fair)'
+                            : '(Needs Improvement)'
+                    }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

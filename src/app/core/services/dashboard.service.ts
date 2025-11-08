@@ -5,6 +5,7 @@ import { TransactionService } from './transaction.service';
 import { CategoryService } from './category.service';
 import { Transaction, TransactionType } from '../models/transaction.models';
 import { ChartConfiguration } from 'chart.js';
+import { BudgetService } from './budget.service';
 
 export interface DashboardStats {
   totalBalance: number;
@@ -30,6 +31,15 @@ export interface CategoryAnalytics {
   uncategorizedSpending: number;
 }
 
+export interface BudgetSummary {
+  totalBudgets: number;
+  activeBudgets: number;
+  budgetsOnTrack: number;
+  budgetsExceeded: number;
+  totalBudgetAmount: number;
+  totalSpent: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -37,7 +47,8 @@ export class DashboardService {
   constructor(
     private transactionService: TransactionService,
     private accountService: AccountService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private budgetService: BudgetService
   ) {}
 
   getDashboardStats(): Observable<DashboardStats> {
@@ -189,5 +200,42 @@ export class DashboardService {
         },
       ],
     };
+  }
+
+  getBudgetSummary(): Observable<BudgetSummary> {
+    return this.budgetService.getBudgetAnalytics().pipe(
+      map(budgets => {
+        const totalBudgets = budgets.length;
+        const activeBudgets = budgets.filter(b => {
+          const now = new Date();
+          const startDate = new Date(b.startDate);
+          const endDate = new Date(b.endDate);
+
+          return now >= startDate && now <= endDate;
+        }).length;
+
+        const budgetsOnTrack = budgets.filter(
+          b => b.status === 'ON_TRACK'
+        ).length;
+        const budgetsExceeded = budgets.filter(
+          b => b.status === 'EXCEEDED'
+        ).length;
+
+        const totalBudgetAmount = budgets.reduce(
+          (sum, b) => sum + Number(b.amount),
+          0
+        );
+        const totalSpent = budgets.reduce((sum, b) => sum + b.spent, 0);
+
+        return {
+          totalBudgets,
+          activeBudgets,
+          budgetsExceeded,
+          budgetsOnTrack,
+          totalBudgetAmount,
+          totalSpent,
+        };
+      })
+    );
   }
 }
