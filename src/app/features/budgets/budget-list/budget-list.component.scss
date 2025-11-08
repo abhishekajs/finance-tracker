@@ -28,7 +28,7 @@
         gap: rem(4);
 
         .date-range {
-          color: $text-secondary;
+          color: var(--text-secondary);
           font-size: rem(12);
         }
       }
@@ -54,7 +54,7 @@
 
         .spent-amount {
           font-size: rem(12);
-          color: $text-secondary;
+          color: var(--text-secondary);
         }
       }
 
@@ -67,7 +67,7 @@
         .progress-text {
           font-size: rem(12);
           text-align: center;
-          color: $text-secondary;
+          color: var(--text-secondary);
         }
       }
     }
@@ -82,18 +82,18 @@
         font-size: rem(64);
         width: rem(64);
         height: rem(64);
-        color: $text-secondary;
+        color: var(--text-secondary);
         margin-bottom: rem(16);
       }
 
       h3 {
         margin: 0 0 rem(8) 0;
-        color: $text-primary;
+        color: var(--text-primary);
       }
 
       p {
         margin: 0 0 rem(24) 0;
-        color: $text-secondary;
+        color: var(--text-secondary);
       }
     }
   }

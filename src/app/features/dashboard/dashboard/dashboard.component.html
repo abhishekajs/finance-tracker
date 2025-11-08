@@ -123,9 +123,23 @@
 
       <mat-card class="action-card" routerLink="/budgets">
         <mat-card-content>
-          <mat-icon class="action-icon">pie_chart</mat-icon>
-          <h3>Budgets & Analytics</h3>
-          <p>Coming soon</p>
+          <mat-icon class="action-icon">savings</mat-icon>
+          <h3>Budgets</h3>
+          <p *ngIf="budgetSummary.totalBudgets === 0">No budgets yet</p>
+          <p *ngIf="budgetSummary.totalBudgets > 0">
+            {{ budgetSummary.activeBudgets }}/{{
+              budgetSummary.totalBudgets
+            }}
+            active
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="action-card" routerLink="/analytics">
+        <mat-card-content>
+          <mat-icon class="action-icon">analytics</mat-icon>
+          <h3>Analytics</h3>
+          <p>View financial insights</p>
         </mat-card-content>
       </mat-card>
     </div>

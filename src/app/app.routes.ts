@@ -48,7 +48,13 @@ export const routes: Routes = [
             m => m.BudgetListComponent
           ),
       },
-      { path: 'analytics', redirectTo: '/dashboard' },
+      {
+        path: 'analytics',
+        loadComponent: () =>
+          import('./features/analytics/analytics.component').then(
+            m => m.AnalyticsComponent
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '/dashboard' },
