@@ -1,0 +1,65 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.profile-container {
+  max-width: rem(600);
+  margin: 0 auto;
+  padding: spacing(4);
+
+  @include tablet-up {
+    padding: spacing(6);
+  }
+}
+
+.page-header {
+  margin-bottom: spacing(6);
+
+  .page-title {
+    font-size: rem(32);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+
+    @include mobile {
+      font-size: rem(24);
+    }
+  }
+}
+
+.profile-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+
+  .profile-avatar {
+    background: var(--primary-100);
+    color: var(--primary-600);
+
+    mat-icon {
+      font-size: rem(24);
+      width: rem(24);
+      height: rem(24);
+    }
+  }
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: spacing(4);
+  margin-top: spacing(4);
+
+  .form-field {
+    width: 100%;
+  }
+}
+
+.card-actions {
+  padding: spacing(4) spacing(6) spacing(6);
+  justify-content: flex-end;
+
+  .save-button {
+    display: flex;
+    align-items: center;
+    gap: spacing(2);
+  }
+}

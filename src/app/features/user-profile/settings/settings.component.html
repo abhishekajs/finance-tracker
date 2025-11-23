@@ -1,0 +1,77 @@
+<div class="settings-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Settings</h1>
+  </div>
+
+  <!-- Appearance Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <div mat-card-avatar class="settings-avatar appearance">
+        <mat-icon>palette</mat-icon>
+      </div>
+      <mat-card-title>Appearance</mat-card-title>
+      <mat-card-subtitle>Customize your app experience</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list class="settings-list">
+        <mat-list-item class="setting-item">
+          <mat-icon matListItemIcon>dark_mode</mat-icon>
+          <div matListItemTitle>Dark Mode</div>
+          <div matListItemLine>Switch between light and dark themes</div>
+          <mat-slide-toggle
+            [(ngModel)]="darkMode"
+            (change)="toggleTheme()"
+            class="setting-toggle"
+          >
+          </mat-slide-toggle>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Notification Settings -->
+  <mat-card class="settings-card">
+    <mat-card-header>
+      <div mat-card-avatar class="settings-avatar notifications">
+        <mat-icon>notifications</mat-icon>
+      </div>
+      <mat-card-title>Notifications</mat-card-title>
+      <mat-card-subtitle
+        >Manage your notification preferences</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-list class="settings-list">
+        <mat-list-item class="setting-item">
+          <mat-icon matListItemIcon>notifications_active</mat-icon>
+          <div matListItemTitle>Push Notifications</div>
+          <div matListItemLine>Receive notifications in the app</div>
+          <mat-slide-toggle
+            [(ngModel)]="notifications"
+            (change)="toggleNotifications()"
+            class="setting-toggle"
+          >
+          </mat-slide-toggle>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item class="setting-item">
+          <mat-icon matListItemIcon>savings</mat-icon>
+          <div matListItemTitle>Budget Alerts</div>
+          <div matListItemLine>Notify when approaching budget limits</div>
+          <mat-slide-toggle
+            [(ngModel)]="budgetAlerts"
+            (change)="toggleBudgetAlerts()"
+            [disabled]="!notifications"
+            class="setting-toggle"
+          >
+          </mat-slide-toggle>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

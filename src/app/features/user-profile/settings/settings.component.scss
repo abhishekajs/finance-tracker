@@ -1,0 +1,66 @@
+@import '../../../../styles/functions';
+@import '../../../../styles/mixins';
+
+.settings-container {
+  max-width: rem(600);
+  margin: 0 auto;
+  padding: spacing(4);
+
+  @include tablet-up {
+    padding: spacing(6);
+  }
+}
+
+.page-header {
+  margin-bottom: spacing(6);
+
+  .page-title {
+    font-size: rem(32);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+
+    @include mobile {
+      font-size: rem(24);
+    }
+  }
+}
+
+.settings-card {
+  @include card-shadow(1);
+  border-radius: rem(12);
+  margin-bottom: spacing(4);
+
+  .settings-avatar {
+    &.appearance {
+      background: var(--primary-100);
+      color: var(--primary-600);
+    }
+
+    &.notifications {
+      background: var(--success-100);
+      color: var(--success-600);
+    }
+
+    mat-icon {
+      font-size: rem(24);
+      width: rem(24);
+      height: rem(24);
+    }
+  }
+}
+
+.settings-list {
+  .setting-item {
+    padding: spacing(3) 0;
+    min-height: rem(72);
+
+    .setting-toggle {
+      margin-left: auto;
+    }
+
+    mat-icon[matListItemIcon] {
+      color: var(--text-secondary);
+    }
+  }
+}

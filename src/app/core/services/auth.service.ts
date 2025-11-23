@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, delay, map, Observable, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   User,
@@ -69,6 +69,25 @@ export class AuthService {
   // get current user
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
+  }
+
+  // Update user profile
+  updateProfile(userData: Partial<User>): Observable<User> {
+    return of(userData).pipe(
+      delay(1000),
+      tap(() => {
+        const currentUser = this.getCurrentUser();
+        if (currentUser) {
+          const updatedUser = { ...currentUser, ...userData };
+          localStorage.setItem(
+            this.STORAGE_KEYS.user,
+            JSON.stringify(updatedUser)
+          );
+          this.currentUserSubject.next(updatedUser);
+        }
+      }),
+      map(() => this.getCurrentUser()!)
+    );
   }
 
   // Check if user is authenticated
