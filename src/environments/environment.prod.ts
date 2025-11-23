@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-api-domain.railway.app/api', // Will set during deployment
+  apiUrl: 'https://finance-tracker-api.railway.app/api', // Will update with actual Railway URL
   storageKeys: {
     accessToken: 'finance_access_token',
     refreshToken: 'finance_refresh_token',

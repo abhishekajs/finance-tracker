@@ -1,27 +1,48 @@
-# FinanceTracker
+# Finance Tracker 💰
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+A modern, responsive personal finance management application built with Angular 17.
 
-## Development server
+## 🚀 Live Demo
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+[View Live Application](https://finance-tracker.vercel.app) *(Will be updated after deployment)*
 
-## Code scaffolding
+## ✨ Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- 📊 **Dashboard** - Financial overview with charts and statistics
+- 💳 **Account Management** - Track multiple accounts (Checking, Savings, Credit)
+- 📝 **Transaction Tracking** - Record and categorize transactions
+- 📈 **Analytics** - Visual reports and spending insights
+- 🎯 **Budget Management** - Set and monitor budgets
+- 👤 **User Profile** - Manage personal information and settings
+- 🔐 **Authentication** - Secure login and registration
+- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
 
-## Build
+## 🛠️ Tech Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Frontend:** Angular 17, Angular Material, TypeScript
+- **Styling:** SCSS with custom design system
+- **Charts:** Chart.js, ng2-charts
+- **State Management:** RxJS, Services
+- **Deployment:** Vercel
+- **CI/CD:** GitHub Actions
 
-## Running unit tests
+## 🏃♂️ Development
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Prerequisites
+- Node.js 18+
+- npm
 
-## Running end-to-end tests
+### Setup
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/finance-tracker.git
+cd finance-tracker
 
-## Further help
+# Install dependencies
+npm install
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Start development server
+npm start
+
+# Navigate to http://localhost:4200
