@@ -69,4 +69,12 @@ export class MainLayoutComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  onProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  onSettings(): void {
+    this.router.navigate(['/settings']);
+  }
 }

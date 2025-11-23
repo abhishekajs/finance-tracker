@@ -55,6 +55,20 @@ export const routes: Routes = [
             m => m.AnalyticsComponent
           ),
       },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./features/user-profile/profile/profile.component').then(
+            m => m.ProfileComponent
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/user-profile/settings/settings.component').then(
+            m => m.SettingsComponent
+          ),
+      },
     ],
   },
   { path: '**', redirectTo: '/dashboard' },
