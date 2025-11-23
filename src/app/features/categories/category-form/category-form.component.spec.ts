@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CategoryFormComponent } from './category-form.component';
+import { testProviders } from '../../../testing/test-providers';
 
 describe('CategoryFormComponent', () => {
   let component: CategoryFormComponent;
@@ -9,6 +9,7 @@ describe('CategoryFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CategoryFormComponent],
+      providers: testProviders,
     }).compileComponents();
 
     fixture = TestBed.createComponent(CategoryFormComponent);

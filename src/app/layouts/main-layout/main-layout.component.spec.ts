@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { MainLayoutComponent } from './main-layout.component';
+import { testProviders } from '../../testing/test-providers';
 
 describe('MainLayoutComponent', () => {
   let component: MainLayoutComponent;
@@ -9,6 +9,7 @@ describe('MainLayoutComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainLayoutComponent],
+      providers: testProviders,
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainLayoutComponent);
